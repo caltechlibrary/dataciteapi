@@ -32,3 +32,4 @@ developed previously at Caltech Library.
 ## Reference
 
 + [DataCite API Docs](https://support.datacite.org/docs/api)
++ [DataCite Metadata Schema v4.1](http://schema.datacite.org/meta/kernel-4.1/)
