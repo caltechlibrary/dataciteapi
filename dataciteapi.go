@@ -21,6 +21,7 @@ const (
 )
 
 type DataCiteClient struct {
+	AppName           string
 	MailTo            string `json:"mailto"`
 	API               string `json:"api"`
 	RateLimitLimit    int    `json:"limit"`
@@ -37,12 +38,13 @@ type Object = map[string]interface{}
 // NewDataCiteClient creates a client and makes a request
 // and returns the JSON source as a []byte or error if their is
 // a problem.
-func NewDataCiteClient(mailTo string) (*DataCiteClient, error) {
+func NewDataCiteClient(appName string, mailTo string) (*DataCiteClient, error) {
 	if strings.TrimSpace(mailTo) == "" {
 		return nil, fmt.Errorf("An mailto value is required for politeness")
 	}
 	client := new(DataCiteClient)
-	client.API = `https://api.crossref.org`
+	client.AppName = appName
+	client.API = `https://api.datacite.org`
 	client.MailTo = mailTo
 	return client, nil
 }
@@ -71,7 +73,7 @@ func (c *DataCiteClient) getJSON(p string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Add("User-Agent", fmt.Sprintf("crossrefapi/%s (github.com/caltechlibrary/crossrefapi/; mailto: %s), A golang cli based on https://github.com/DataCite/rest-api-doc", Version, c.MailTo))
+	req.Header.Add("User-Agent", fmt.Sprintf("%s, based on dataciteapi/%s (github.com/caltechlibrary/dataciteapi/; mailto: %s), A golang cli based on https://support.datacite.org/docs/api", c.AppName, Version, c.MailTo))
 
 	// NOTE: Next request can be made based on last request time plus
 	// the duration suggested by X-Rate-Limit-Interval / X-Rate-Limit-Limit
@@ -112,25 +114,6 @@ func (c *DataCiteClient) getJSON(p string) ([]byte, error) {
 	c.LastRequest = time.Now()
 
 	return src, nil
-}
-
-// TypesJSON return a list of types in JSON source
-func (c *DataCiteClient) TypesJSON() ([]byte, error) {
-	return c.getJSON("types")
-}
-
-// Types returns the list of supported types as a Object
-func (c *DataCiteClient) Types() (Object, error) {
-	src, err := c.TypesJSON()
-	if err != nil {
-		return nil, err
-	}
-	object := make(Object)
-	err = json.Unmarshal(src, &object)
-	if err != nil {
-		return nil, err
-	}
-	return object, nil
 }
 
 // WorksJSON return the work JSON source or error for a client and DOI

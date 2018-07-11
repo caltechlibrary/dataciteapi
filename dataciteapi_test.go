@@ -14,7 +14,7 @@ var (
 )
 
 func TestClient(t *testing.T) {
-	api, err := NewDataCiteClient(MailTo)
+	api, err := NewDataCiteClient("datacite_test.go", MailTo)
 	if err != nil {
 		t.Error(err)
 		t.FailNow()
@@ -29,8 +29,9 @@ func TestClient(t *testing.T) {
 		t.Errorf("expected 0001-01-01 00:00:00 +0000, got %s", api.LastRequest)
 	}
 
-	// test low level getJSON
-	src, err := api.getJSON("/types")
+	// test low level getJSON, 10.22002/D1.868 is
+	// a Caltech Library DataCite DOI
+	src, err := api.getJSON("/works/10.22002/D1.868")
 	if err != nil {
 		t.Error(err)
 		t.FailNow()
@@ -39,7 +40,7 @@ func TestClient(t *testing.T) {
 		t.Errorf("Expected StatusCode 200, got %d -> %s", api.StatusCode, api.Status)
 	}
 	if len(src) == 0 {
-		t.Errorf("expected a response body from /types")
+		t.Errorf("expected a response body from /works/10.22002/D1.868")
 	}
 	if api.RateLimitLimit == 0 {
 		t.Errorf("expected greater than zero, got %d", api.RateLimitLimit)
@@ -51,8 +52,11 @@ func TestClient(t *testing.T) {
 		t.Errorf("expected not equal to 0001-01-01 00:00:00 +0000, got %s", api.LastRequest)
 	}
 
-	// test Types API end point
-	src, err = api.TypesJSON()
+	// Now test WorksJSON()
+	doi := "10.22002/D1.868"
+	doi_url := "https://dx.doi.org/10.22002/D1.868"
+
+	src, err = api.WorksJSON(doi)
 	if err != nil {
 		t.Errorf("expected a JSON response, got %s", err)
 		t.FailNow()
@@ -71,46 +75,7 @@ func TestClient(t *testing.T) {
 		t.Errorf("expected unmarshaled object, got nil")
 		t.FailNow()
 	}
-
-	obj2, err := api.Types()
-	if err != nil {
-		t.Errorf("expected an Object from Types(), got error %s", err)
-		t.FailNow()
-	}
-	if obj2 == nil {
-		t.Errorf("expected an non-nil Object from Types(), got nil but no error")
-		t.FailNow()
-	}
-
-	if len(obj1) != len(obj2) {
-		t.Errorf("expected equal lengths for obj1, obj2 ->\n%+v, \n%+v", obj1, obj2)
-		t.FailNow()
-	}
-
-	// Now test Works
-	doi := "10.1037/0003-066x.59.1.29"                        //"10.1000/xyz123"
-	doi_url := "https://dx.doi.org/10.1037/0003-066x.59.1.29" // "https://dx.doi.org/10.1000/xyz123"
-
-	src, err = api.WorksJSON(doi)
-	if err != nil {
-		t.Errorf("expected a JSON response, got %s", err)
-		t.FailNow()
-	}
-	if api.StatusCode != 200 {
-		t.Errorf("expected status code 200, got %d -> %q", api.StatusCode, api.Status)
-		t.FailNow()
-	}
-	obj1 = nil
-	err = json.Unmarshal(src, &obj1)
-	if err != nil {
-		t.Error(err)
-		t.FailNow()
-	}
-	if obj1 == nil {
-		t.Errorf("expected unmarshaled object, got nil")
-		t.FailNow()
-	}
-	obj2, err = api.Works(doi_url)
+	obj2, err := api.Works(doi_url)
 	if obj2 == nil {
 		t.Errorf("expected an non-nil Object from Types(), got nil but no error")
 		t.FailNow()

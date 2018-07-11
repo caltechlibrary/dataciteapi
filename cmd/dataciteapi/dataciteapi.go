@@ -148,7 +148,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	api, err := dataciteapi.NewDataCiteClient(mailto)
+	api, err := dataciteapi.NewDataCiteClient(appName, mailto)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s\n", err)
 		os.Exit(1)
@@ -166,12 +166,6 @@ func main() {
 		os.Exit(1)
 	}
 	switch strings.ToLower(apiPath) {
-	case "types":
-		src, err = api.TypesJSON()
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "%s\n", err)
-			os.Exit(1)
-		}
 	case "works":
 		src, err = api.WorksJSON(doi)
 		if err != nil {
