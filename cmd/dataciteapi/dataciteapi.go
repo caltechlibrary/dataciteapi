@@ -32,16 +32,12 @@ import (
 
 var (
 	description = `
-%s is a command line utility to retrieve "types" and "works" objects
+%s is a command line utility to retrieve "works" objects
 from the DataCite API. It follows the protocols described at
 	
   https://support.datacite.org/docs/api
 
 EXAMPLES
-
-Return the types of objects in DataCite (e.g. journal articles)
-
-  %s -mailto="jdoe@example.edu" types
 
 Return the works for the doi "10.1037/0003-066x.59.1.29"
 
@@ -97,9 +93,9 @@ func pop(args []string) (string, []string) {
 func main() {
 	appName := path.Base(os.Args[0])
 	app := cli.NewCli(dataciteapi.Version)
-	app.AddParams("types|works DOI")
+	app.AddParams("works", "DOI")
 
-	app.AddHelp("description", []byte(fmt.Sprintf(description, appName, appName, appName)))
+	app.AddHelp("description", []byte(fmt.Sprintf(description, appName, appName)))
 	app.AddHelp("license", []byte(fmt.Sprintf(license, appName, dataciteapi.Version)))
 	for k, v := range Help {
 		app.AddHelp(k, v)

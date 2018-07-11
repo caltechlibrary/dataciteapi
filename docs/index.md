@@ -1,7 +1,7 @@
 
 # USAGE
 
-	dataciteapi [OPTIONS] types|works DOI
+	dataciteapi [OPTIONS] works DOI
 
 ## SYNOPSIS
 
@@ -9,13 +9,9 @@
 dataciteapi is a command line utility to retrieve "types" and "works" objects
 from the DataCite API. It follows the etiquette suggested at
 	
-	https://github.com/DataCite/rest-api-doc#etiquette
+	https://support.datacite.org/docs/api
 
 EXAMPLES
-
-Return the types of objects in DataCite (e.g. journal articles)
-
-	dataciteapi -mailto="jane.doe@example.edu" types
 
 Return the works for the doi "10.1000/xyz123"
 
