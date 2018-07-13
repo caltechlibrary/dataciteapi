@@ -159,7 +159,7 @@ func main() {
 	apiPath, args = pop(args)
 	doi, args = pop(args)
 	if apiPath == "" {
-		fmt.Fprintf(os.Stderr, "USAGE: %s works DOI | %s types\n", appName, appName)
+		fmt.Fprintf(os.Stderr, "USAGE: %s works DOI\n", appName)
 		os.Exit(1)
 	}
 	switch strings.ToLower(apiPath) {
@@ -176,7 +176,7 @@ func main() {
 			os.Exit(1)
 		}
 	default:
-		fmt.Fprintf(os.Stderr, "USAGE: %s works DOI | %s types\n", appName, appName)
+		fmt.Fprintf(os.Stderr, "USAGE: %s works DOI\n", appName)
 		os.Exit(1)
 	}
 	fmt.Fprintf(os.Stdout, "%s\n", src)
