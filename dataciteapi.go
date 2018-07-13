@@ -59,6 +59,8 @@ func (c *DataCiteClient) calcDelay() time.Duration {
 // getJSON retrieves the path from the DataCite API maintaining politeness.
 // It returns a []byte of JSON source or an error
 func (c *DataCiteClient) getJSON(p string) ([]byte, error) {
+	var src []byte
+
 	u, err := url.Parse(c.API)
 	if err != nil {
 		return nil, err
@@ -89,9 +91,11 @@ func (c *DataCiteClient) getJSON(p string) ([]byte, error) {
 	c.Status = res.Status
 	c.StatusCode = res.StatusCode
 	// Process the body buffer
-	src, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return nil, err
+	if c.StatusCode == 200 {
+		src, err = ioutil.ReadAll(res.Body)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	// NOTE: we want to track the current values for any limits
@@ -131,10 +135,13 @@ func (c *DataCiteClient) Works(doi string) (Object, error) {
 	if err != nil {
 		return nil, err
 	}
-	object := make(Object)
-	err = json.Unmarshal(src, &object)
-	if err != nil {
-		return nil, err
+	if len(src) > 0 {
+		object := make(Object)
+		err = json.Unmarshal(src, &object)
+		if err != nil {
+			return nil, err
+		}
+		return object, nil
 	}
-	return object, nil
+	return nil, nil
 }
