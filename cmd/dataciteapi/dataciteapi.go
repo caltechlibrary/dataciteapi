@@ -32,17 +32,24 @@ import (
 )
 
 var (
+	synopsis = `
+_%s_ retrieves "works" from the DataCite API.
+`
 	description = `
-%s is a command line utility to retrieve "works" objects
+_%s_ is a command line utility to retrieve "works" objects
 from the DataCite API. It follows the protocols described at
-	
+` + "```" + `	
   https://support.datacite.org/docs/api
+` + "```" + `	
+`
 
-EXAMPLES
-
+	examples = `
 Return the works for the doi "10.1037/0003-066x.59.1.29"
 
-  %s -mailto="jdoe@example.edu" works "10.1037/0003-066x.59.1.29"
+` + "```" + `	
+    %s -mailto="jdoe@example.edu" \
+        works "10.1037/0003-066x.59.1.29"
+` + "```" + `	
 
 `
 
@@ -64,6 +71,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 `
 	// Standard Options
 	generateMarkdownDocs bool
+	generateManPage      bool
 	showHelp             bool
 	showLicense          bool
 	showVersion          bool
@@ -96,7 +104,9 @@ func main() {
 	app := cli.NewCli(dataciteapi.Version)
 	app.AddParams("works", "DOI")
 
-	app.AddHelp("description", []byte(fmt.Sprintf(description, appName, appName)))
+	app.AddHelp("synopsis", []byte(fmt.Sprintf(description, appName)))
+	app.AddHelp("description", []byte(fmt.Sprintf(description, appName)))
+	app.AddHelp("examples", []byte(fmt.Sprintf(examples, appName)))
 	app.AddHelp("license", []byte(fmt.Sprintf(license, appName, dataciteapi.Version)))
 	for k, v := range Help {
 		app.AddHelp(k, v)
@@ -107,6 +117,7 @@ func main() {
 	app.BoolVar(&showLicense, "l,license", false, "display license")
 	app.BoolVar(&showVersion, "v,version", false, "display app version")
 	app.BoolVar(&generateMarkdownDocs, "generate-markdown-docs", false, "output documentation in Markdown")
+	app.BoolVar(&generateManPage, "generate-manpage", false, "generate man page")
 
 	// Application Options
 	app.StringVar(&mailto, "m,mailto", "", "set the mailto value for API access")
@@ -116,6 +127,10 @@ func main() {
 
 	if generateMarkdownDocs {
 		app.GenerateMarkdownDocs(os.Stdout)
+		os.Exit(0)
+	}
+	if generateManPage {
+		app.GenerateManPage(os.Stdout)
 		os.Exit(0)
 	}
 
