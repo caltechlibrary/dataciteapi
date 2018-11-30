@@ -102,7 +102,7 @@ func pop(args []string) (string, []string) {
 func main() {
 	appName := path.Base(os.Args[0])
 	app := cli.NewCli(dataciteapi.Version)
-	app.AddParams("works", "DOI")
+	app.SetParams("works", "DOI")
 
 	app.AddHelp("synopsis", []byte(fmt.Sprintf(description, appName)))
 	app.AddHelp("description", []byte(fmt.Sprintf(description, appName)))

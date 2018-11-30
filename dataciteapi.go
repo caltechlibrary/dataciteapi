@@ -1,8 +1,10 @@
 package dataciteapi
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"math"
 	"net/http"
@@ -17,7 +19,7 @@ import (
 )
 
 const (
-	Version = `v0.0.3`
+	Version = `v0.0.4`
 )
 
 type DataCiteClient struct {
@@ -34,6 +36,19 @@ type DataCiteClient struct {
 
 // Object is the general holder of what get back after unmarshaling json
 type Object = map[string]interface{}
+
+// jsonDecode is a custom json unmarshaler that returns numeric values
+// as type json.Number rather than float64.
+func jsonDecode(src []byte, obj interface{}) error {
+	dec := json.NewDecoder(bytes.NewReader(src))
+	dec.UseNumber()
+	dec.UseNumber()
+	err := dec.Decode(&obj)
+	if err != nil && err != io.EOF {
+		return err
+	}
+	return nil
+}
 
 // NewDataCiteClient creates a client and makes a request
 // and returns the JSON source as a []byte or error if their is
@@ -137,7 +152,7 @@ func (c *DataCiteClient) Works(doi string) (Object, error) {
 	}
 	if len(src) > 0 {
 		object := make(Object)
-		err = json.Unmarshal(src, &object)
+		err = jsonDecode(src, &object)
 		if err != nil {
 			return nil, err
 		}
