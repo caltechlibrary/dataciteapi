@@ -1,13 +1,15 @@
 
-# Installation
+Installation
+============
 
 *dataciteapi* is a command line program run from a shell like Bash. It allows you to retrieve JSON works objects from the DataCite API via DataCites REST API.
 
 This is generalized instructions for a release.  For deployment suggestions see NOTES.md
 
-## Compiled version
+Compiled version
+----------------
 
-Compiled versions are available for Mac OS X (amd64 processor, macosx-amd64), Linux (amd64 process, linux-amd64), 
+Compiled versions are available for Mac OS X (amd64 and M1 processor, macos-amd64, macos-arm64), Linux (amd64 process, linux-amd64), 
 Windows (amd64 processor, windows-amd64) and Rapsberry Pi (arm7 processor, raspbian-arm7)
 
 VERSION_NUMBER is a [symantic version number](http://semver.org/) (e.g. v0.1.2)
@@ -21,12 +23,13 @@ For all the released version go to the project page on Github and click latest r
 | Platform    | Zip Filename                             |
 |-------------|------------------------------------------|
 | Windows     | dataciteapi-VERSION_NUMBER-windows-amd64.zip |
-| Mac OS X    | dataciteapi-VERSION_NUMBER-macosx-amd64.zip  |
+| Mac OS X    | dataciteapi-VERSION_NUMBER-macos-amd64.zip  |
 | Linux/Intel | dataciteapi-VERSION_NUMBER-linux-amd64.zip   |
 | Raspbery Pi | dataciteapi-VERSION_NUMBER-raspbian-arm7.zip |
 
 
-## The basic recipe
+The basic recipe
+----------------
 
 + Find the Zip file listed matching the architecture you're running and download it
     + (e.g. if you're on a Windows 10 laptop/Surface with a amd64 style CPU you'd choose the Zip file with "windows-amd64" in the name).
@@ -34,7 +37,7 @@ For all the released version go to the project page on Github and click latest r
 + Copy the contents of the folder named "bin" to a folder that is in your path 
     + (e.g. "$HOME/bin" is common).
 + Adjust your PATH if needed
-    + (e.g. `export PATH="$HOME/bin:$PATH"`)
+    + (e.g. export PATH="$HOME/bin:$PATH")
 + Test
 
 
@@ -51,7 +54,7 @@ zip file.
 
 ```shell
     cd Downloads/
-    unzip dataciteapi-*-macosx-amd64.zip
+    unzip dataciteapi-*-macos-amd64.zip
     mkdir -p $HOME/bin
     cp -v bin/* $HOME/bin/
     export PATH=$HOME/bin:$PATH
@@ -120,7 +123,8 @@ downloading the zip file.
 ```
 
 
-## Compiling from source
+Compiling from source
+---------------------
 
 _dataciteapi_ is "go gettable".  Use the "go get" command to download the dependant packages
 as well as _dataciteapi_'s source code. 
@@ -141,5 +145,5 @@ Or clone the repstory and then compile
     make install
 ```
 
-Compilation assumes [go](https://github.com/golang/go) v1.10 and [bleve](https://blevesearh.com) v0.6.0.
+Compilation assumes [go](https://github.com/golang/go) v1.16
 
