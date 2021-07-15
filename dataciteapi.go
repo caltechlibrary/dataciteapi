@@ -19,7 +19,11 @@ import (
 )
 
 const (
+<<<<<<< HEAD
 	Version = `v1.0.0`
+=======
+	Version = `v0.0.5`
+>>>>>>> 6aa63858f1ef0a3b0cc3b227a260383bedd11b47
 )
 
 type DataCiteClient struct {

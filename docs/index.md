@@ -6,28 +6,47 @@
 ## SYNOPSIS
 
 
-dataciteapi is a command line utility to retrieve "types" and "works" objects
-from the DataCite API. It follows the etiquette suggested at
-	
-	https://support.datacite.org/docs/api
+_dataciteapi_ is a command line utility to retrieve "works" objects
+from the DataCite API. It follows the protocols described at
+```	
+  https://support.datacite.org/docs/api
+```	
 
-EXAMPLES
 
-Return the works for the doi "10.1000/xyz123"
+## DESCRIPTION
 
-	dataciteapi -mailto="jane.doe@example.edu" works "10.1000/xyz123"
 
+_dataciteapi_ is a command line utility to retrieve "works" objects
+from the DataCite API. It follows the protocols described at
+```	
+  https://support.datacite.org/docs/api
+```	
 
 
 ## OPTIONS
 
+Below are a set of options available.
+
 ```
-    -generate-markdown-docs   output documentation in Markdown
-    -h, -help                 display help
-    -l, -license              display license
-    -m, -mailto               set the mailto value for API access
-    -v, -version              display app version
+    -generate-manpage    generate man page
+    -generate-markdown   output documentation in Markdown
+    -h, -help            display help
+    -l, -license         display license
+    -m, -mailto          set the mailto value for API access
+    -v, -version         display app version
 ```
 
 
-dataciteapi v0.0.1
+## EXAMPLES
+
+
+Return the works for the doi "10.1037/0003-066x.59.1.29"
+
+```	
+    dataciteapi -mailto="jdoe@example.edu" \
+        works "10.1037/0003-066x.59.1.29"
+```	
+
+
+
+dataciteapi v0.0.5
