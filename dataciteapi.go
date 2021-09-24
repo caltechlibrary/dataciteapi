@@ -18,17 +18,12 @@ import (
 	"github.com/caltechlibrary/doitools"
 )
 
-const (
-	Version = `v1.0.0`
-)
-
 type DataCiteClient struct {
 	AppName           string
 	MailTo            string `json:"mailto"`
 	API               string `json:"api"`
 	RateLimitLimit    int    `json:"limit"`
 	RateLimitInterval int    `json:"interval"`
-	LimtCount         int    `json:"limit"`
 	Status            string
 	StatusCode        int
 	LastRequest       time.Time `json:"last_request"`
