@@ -16,5 +16,5 @@ keywords:
 message: "If you use this software, please cite it using these metadata."
 repository-code: "https://github.com/caltechlibrary/dataciteapi"
 title: "dataciteapi"
-version: "1.0.0"
+version: "1.0.1"
 ...
