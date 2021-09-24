@@ -7,7 +7,7 @@ VERSION = $(shell grep '"version":' codemeta.json | cut -d \" -f 4)
 
 BRANCH = $(shell git branch | grep '* ' | cut -d\  -f 2)
 
-PKGASSETS = $(shell which pkgassets)
+CODEMETA2CFF = $(shell which codemeta2cff)
 
 PROJECT_LIST = dataciteapi
 
@@ -22,12 +22,8 @@ build: version.go $(PROJECT_LIST)
 
 dataciteapi$(EXT): bin/dataciteapi$(EXT)
 
-cmd/dataciteapi/assets.go:
-	pkgassets -o cmd/dataciteapi/assets.go -p main -ext=".md" -strip-prefix="/" -strip-suffix=".md" Examples how-to Help docs/dataciteapi
-	git add cmd/dataciteapi/assets.go
-
-bin/dataciteapi$(EXT): dataciteapi.go cmd/dataciteapi/dataciteapi.go cmd/dataciteapi/assets.go
-	go build -o bin/dataciteapi$(EXT) cmd/dataciteapi/dataciteapi.go cmd/dataciteapi/assets.go
+bin/dataciteapi$(EXT): dataciteapi.go cmd/dataciteapi/dataciteapi.go
+	go build -o bin/dataciteapi$(EXT) cmd/dataciteapi/dataciteapi.go
 
 
 version.go: .FORCE
@@ -36,10 +32,11 @@ version.go: .FORCE
 	@echo 'const Version = "v$(VERSION)"' >>version.go
 	@echo '' >>version.go
 	@git add version.go
+	$(CODEMETA2CFF)
 
 
 install: 
-	env GOBIN=$(GOPATH)/bin go install cmd/dataciteapi/dataciteapi.go cmd/dataciteapi/assets.go
+	env GOBIN=$(GOPATH)/bin go install cmd/dataciteapi/dataciteapi.go
 
 website: page.tmpl README.md nav.md INSTALL.md LICENSE css/site.css
 	bash mk-website.bash
@@ -58,7 +55,6 @@ lint:
 	golint cmd/dataciteapi/dataciteapi.go
 
 clean: 
-	if [ "$(PKGASSETS)" != "" ]; then bash rebuild-assets.bash; fi
 	if [ -f index.html ]; then rm *.html; fi
 	if [ -d bin ]; then rm -fR bin; fi
 	if [ -d dist ]; then rm -fR dist; fi
@@ -71,31 +67,31 @@ man: build
 
 dist/linux-amd64:
 	mkdir -p dist/bin
-	env  GOOS=linux GOARCH=amd64 go build -o dist/bin/dataciteapi cmd/dataciteapi/dataciteapi.go cmd/dataciteapi/assets.go
+	env  GOOS=linux GOARCH=amd64 go build -o dist/bin/dataciteapi cmd/dataciteapi/dataciteapi.go
 	cd dist && zip -r $(PROJECT)-v$(VERSION)-linux-amd64.zip README.md LICENSE INSTALL.md bin/*
 	rm -fR dist/bin
 
 dist/windows-amd64:
 	mkdir -p dist/bin
-	env  GOOS=windows GOARCH=amd64 go build -o dist/bin/dataciteapi.exe cmd/dataciteapi/dataciteapi.go cmd/dataciteapi/assets.go
+	env  GOOS=windows GOARCH=amd64 go build -o dist/bin/dataciteapi.exe cmd/dataciteapi/dataciteapi.go
 	cd dist && zip -r $(PROJECT)-v$(VERSION)-windows-amd64.zip README.md LICENSE INSTALL.md bin/*
 	rm -fR dist/bin
 
 dist/macos-amd64:
 	mkdir -p dist/bin
-	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/dataciteapi cmd/dataciteapi/dataciteapi.go cmd/dataciteapi/assets.go
+	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/dataciteapi cmd/dataciteapi/dataciteapi.go
 	cd dist && zip -r $(PROJECT)-v$(VERSION)-macos-amd64.zip README.md LICENSE INSTALL.md bin/*
 	rm -fR dist/bin
 
 dist/macos-arm64:
 	mkdir -p dist/bin
-	env  GOOS=darwin GOARCH=arm64 go build -o dist/bin/dataciteapi cmd/dataciteapi/dataciteapi.go cmd/dataciteapi/assets.go
+	env  GOOS=darwin GOARCH=arm64 go build -o dist/bin/dataciteapi cmd/dataciteapi/dataciteapi.go
 	cd dist && zip -r $(PROJECT)-v$(VERSION)-macos-arm64.zip README.md LICENSE INSTALL.md bin/*
 	rm -fR dist/bin
 
 dist/raspbian-arm7:
 	mkdir -p dist/bin
-	env  GOOS=linux GOARCH=arm GOARM=7 go build -o dist/bin/dataciteapi cmd/dataciteapi/dataciteapi.go cmd/dataciteapi/assets.go
+	env  GOOS=linux GOARCH=arm GOARM=7 go build -o dist/bin/dataciteapi cmd/dataciteapi/dataciteapi.go
 	cd dist && zip -r $(PROJECT)-v$(VERSION)-raspbian-arm7.zip README.md LICENSE INSTALL.md bin/*
 	rm -fR dist/bin
 
