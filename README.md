@@ -13,7 +13,8 @@ Go package example
 ------------------
 
 ```go
-    client, err := dataciteapi.NewDataCiteClient("jane.doe@library.example.edu")
+    appName := path.Base(os.Args[0])
+    client, err := dataciteapi.NewDataCiteClient(appName, "jane.doe@library.example.edu")
     if err != nil {
         // handle error...
     }
