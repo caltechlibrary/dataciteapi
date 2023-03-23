@@ -7,18 +7,18 @@ VERSION = $(shell grep '"version":' codemeta.json | cut -d \" -f 4)
 
 BRANCH = $(shell git branch | grep '* ' | cut -d\  -f 2)
 
-CODEMETA2CFF = $(shell which codemeta2cff)
-
 PROJECT_LIST = dataciteapi
+
+PANDOC = $(shell which pandoc)
 
 OS = $(shell uname)
 
-EXT = 
+EXT =
 ifeq ($(OS), Windows)
 	EXT = .exe
 endif
 
-build: version.go $(PROJECT_LIST)
+build: version.go $(PROJECT_LIST) CITATION.cff about.md
 
 dataciteapi$(EXT): bin/dataciteapi$(EXT)
 
@@ -27,18 +27,32 @@ bin/dataciteapi$(EXT): dataciteapi.go cmd/dataciteapi/dataciteapi.go
 
 
 version.go: .FORCE
-	@echo "package $(PROJECT)" >version.go
-	@echo '' >>version.go
-	@echo 'const Version = "v$(VERSION)"' >>version.go
-	@echo '' >>version.go
-	@git add version.go
-	$(CODEMETA2CFF)
+	@echo	"package	$(PROJECT)"	>version.go
+	@echo	''	>>version.go
+	@echo	'const	('	>>version.go
+	@echo	'	Version	=	"$(VERSION)"'	>>version.go
+	@echo	''	>>version.go
+	@echo	'	LicenseText	=	`'	>>version.go
+	@cat	LICENSE	>>version.go
+	@echo	'`'	>>version.go
+	@echo	')'	>>version.go
+	@echo	''	>>version.go
+	@git	add	version.go
 
 
-install: 
+CITATION.cff: codemeta.json
+	@cat	codemeta.json	|	sed	-E	's/"@context"/"at__context"/g;s/"@type"/"at__type"/g;s/"@id"/"at__id"/g'	>_codemeta.json
+	@if	[	-f	$(PANDOC)	];	then	echo	""	|	$(PANDOC)	--metadata	title="Cite	$(PROJECT)"	--metadata-file=_codemeta.json	--template=codemeta-cff.tmpl	>CITATION.cff;	fi
+
+about.md: codemeta.json
+	@cat	codemeta.json	|	sed	-E	's/"@context"/"at__context"/g;s/"@type"/"at__type"/g;s/"@id"/"at__id"/g'	>_codemeta.json
+	@if	[	-f	$(PANDOC)	];	then	echo	""	|	pandoc	--metadata-file=_codemeta.json	--template	codemeta-md.tmpl	>about.md	2>/dev/null;	fi
+	@if	[	-f	_codemeta.json	];	then	rm	_codemeta.json;	fi
+
+install:
 	env GOBIN=$(GOPATH)/bin go install cmd/dataciteapi/dataciteapi.go
 
-website: page.tmpl README.md nav.md INSTALL.md LICENSE css/site.css
+website: page.tmpl README.md nav.md INSTALL.md LICENSE css/site.css about.md
 	bash mk-website.bash
 
 test: clean bin/dataciteapi$(EXT)
@@ -54,7 +68,7 @@ lint:
 	golint dataciteapi_test.go
 	golint cmd/dataciteapi/dataciteapi.go
 
-clean: 
+clean:
 	if [ -f index.html ]; then rm *.html; fi
 	if [ -d bin ]; then rm -fR bin; fi
 	if [ -d dist ]; then rm -fR dist; fi
