@@ -11,41 +11,36 @@ authors:
     orcid: "https://orcid.org/0000-0003-0900-6903"
 
 repository-code: "https://github.com/caltechlibrary/dataciteapi"
-version: 1.0.2-pre
+version: 1.0.2
 license-url: "https://caltechlibrary/dataciteapi/LICENSE"
 keywords: [ "DataCite", "DOI", "GitHub", "metadata" ]
-
+date-released: 2021-07-15
 ---
 
 About this software
 ===================
 
-## dataciteapi 1.0.2-pre
+## dataciteapi 1.0.2
 
 ### Authors
 
 - Robert Doiel
 
 
+### Maintainers
+
+-  
+
 A Golang package and command line tool for working with the public
 DataCite API
 
-### Keywords
-
-- DataCite
-- DOI
-- GitHub
-- metadata
-
-### Software
-
-- License: [https://caltechlibrary/dataciteapi/LICENSE](https://caltechlibrary/dataciteapi/LICENSE "link to license")
-- GitHub: [https://github.com/caltechlibrary/dataciteapi](https://github.com/caltechlibrary/dataciteapi "link to GitHub")
-- Issues: [https://github.com/caltechlibrary/dataciteapi/issues](https://github.com/caltechlibrary/dataciteapi/issues "link to GitHub issues")
+- License: <https://caltechlibrary/dataciteapi/LICENSE>
+- GitHub: <https://github.com/caltechlibrary/dataciteapi>
+- Issues: <https://github.com/caltechlibrary/dataciteapi/issues>
 
 
 ### Programming languages
 
-- Go
+- Go &gt;= 1.22
 
 

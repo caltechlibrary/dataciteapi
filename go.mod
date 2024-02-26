@@ -1,7 +1,5 @@
 module github.com/caltechlibrary/dataciteapi
 
-go 1.17
+go 1.22
 
-require (
-	github.com/caltechlibrary/doitools v0.0.1
-)
+require github.com/caltechlibrary/doitools v0.0.2

@@ -1,4 +1,3 @@
-//
 // dataciteapi.go is a command line tool for access the DataCite API given
 // a specific DOI.
 //
@@ -16,12 +15,11 @@
 // 3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
 //
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
 package main
 
 import (
-"flag"
 	"encoding/json"
+	"flag"
 	"fmt"
 	"os"
 	"path"
@@ -32,24 +30,45 @@ import (
 )
 
 var (
-	description = `
-USAGE
-	{appName} [OPTIONS] works DOI
+	helpText = `---
+title: "{app_name}(1) user manual | version {version} {release_hash}"
+author: "R. S. Doiel"
+pubDate: {release_date}
+---
 
-SYNOPSIS
+# NAME
 
-{appName} retrieves "works" from the DataCite API.
+{app_name}
 
-DETAIL
+# SYNOPSIS
 
-{appName} is a command line utility to retrieve "works" objects
+{appName} [OPTIONS] works DOI
+
+# DESCRIPTION
+
+{app_name} retrieves "works" from the DataCite API.
+
+{app_name} is a command line utility to retrieve "works" objects
 from the DataCite API. It follows the protocols described at
 
   https://support.datacite.org/docs/api
 
-`
+# OPTIONS
 
-	examples = `
+-help
+: display help
+
+-license
+: display license
+
+-mailto string
+: set the mailto value for API access
+
+-version
+: display app version
+
+# EXAMPLES
+
 Return the works for the doi "10.1037/0003-066x.59.1.29"
 
     {appName} -mailto="jdoe@example.edu" \
@@ -58,9 +77,9 @@ Return the works for the doi "10.1037/0003-066x.59.1.29"
 `
 
 	// Standard Options
-	showHelp         bool
-	showLicense      bool
-	showVersion      bool
+	showHelp    bool
+	showLicense bool
+	showVersion bool
 
 	// App Specific Options
 	mailto string
@@ -87,6 +106,11 @@ func pop(args []string) (string, []string) {
 
 func main() {
 	appName := path.Base(os.Args[0])
+	// NOTE: This is the date that version.go was generated.
+	version := dataciteapi.Version
+	releaseDate := dataciteapi.ReleaseDate
+	releaseHash := dataciteapi.ReleaseHash
+	fmtHelp := dataciteapi.FmtHelp
 
 	flagSet := flag.NewFlagSet(appName, flag.ContinueOnError)
 
@@ -104,22 +128,22 @@ func main() {
 	args := flagSet.Args()
 
 	if showHelp {
-		dataciteapi.DisplayUsage(os.Stdout, appName, flagSet, description, examples, dataciteapi.LicenseText)
+		fmt.Fprint(os.Stdout, fmtHelp(helpText, appName, version, releaseDate, releaseHash))
 		os.Exit(0)
 	}
 
 	if showLicense {
-		dataciteapi.DisplayLicense(os.Stdout, appName, dataciteapi.LicenseText)
+		fmt.Fprintf(os.Stdout, "%s\n", dataciteapi.LicenseText)
 		os.Exit(0)
 	}
 
 	if showVersion {
-		dataciteapi.DisplayVersion(os.Stdout, appName)
+		fmt.Fprintf(os.Stdout, "%s %s %s\n", appName, version, releaseHash)
 		os.Exit(0)
 	}
 
 	if len(args) < 1 {
-		dataciteapi.DisplayUsage(os.Stderr, appName, flagSet, description, examples, dataciteapi.LicenseText)
+		fmt.Fprint(os.Stdout, fmtHelp(helpText, appName, version, releaseDate, releaseHash))
 		os.Exit(1)
 	}
 
@@ -148,7 +172,6 @@ func main() {
 			os.Exit(1)
 		}
 		src, err = json.MarshalIndent(obj, "", "   ")
-		//src, err = api.WorksJSON(doi)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "%s\n", err)
 			os.Exit(1)
