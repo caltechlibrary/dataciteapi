@@ -198,6 +198,6 @@ distribute_docs:
 clean_dist: .FORCE
 	if [ -d dist ]; then rm -fR dist*; fi
 
-release: .FORCE installer.sh save build save clean_dist distribute_docs dist/Linux-x86_64 dist/Linux-aarch64 dist/macOS-x86_64 dist/macOS-arm64 dist/Windows-x86_64 dist/Windows-arm64 dist/RaspberryPiOS-arm7 dist/Linux-armv7l
+release: .FORCE installer.sh build save clean_dist distribute_docs dist/Linux-x86_64 dist/Linux-aarch64 dist/macOS-x86_64 dist/macOS-arm64 dist/Windows-x86_64 dist/Windows-arm64 dist/RaspberryPiOS-arm7 dist/Linux-armv7l
 
 .FORCE:
