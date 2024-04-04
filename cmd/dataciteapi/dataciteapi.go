@@ -53,6 +53,10 @@ from the DataCite API. It follows the protocols described at
 
   https://support.datacite.org/docs/api
 
+NOTE: As of release v1.0.3 you can pass an arXiv id and it will be
+converted to the DOI version of arXiv registered with DataCite
+under the 10.48550 prefix.
+
 # OPTIONS
 
 -help
@@ -71,8 +75,17 @@ from the DataCite API. It follows the protocols described at
 
 Return the works for the doi "10.1037/0003-066x.59.1.29"
 
+~~~
     {appName} -mailto="jdoe@example.edu" \
         works "10.1037/0003-066x.59.1.29"
+~~~
+
+Get the data cite record for "arXiv:2202.01037"
+
+~~~
+    {appName} -mailto="jdoe@example.edi" \
+	    works "arXiv:2202.01037"
+~~~
 
 `
 
