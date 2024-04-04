@@ -132,6 +132,9 @@ func (c *DataCiteClient) getJSON(p string) ([]byte, error) {
 
 // WorksJSON return the work JSON source or error for a client and DOI
 func (c *DataCiteClient) WorksJSON(doi string) ([]byte, error) {
+	if IsArXiv(doi) {
+		doi = ArVixToDOI(doi)
+	}
 	s, err := doitools.NormalizeDOI(doi)
 	if err != nil {
 		return nil, err
@@ -141,6 +144,9 @@ func (c *DataCiteClient) WorksJSON(doi string) ([]byte, error) {
 
 // Works return the Work unmarshaled into a Object (i.e. map[string]interface{})
 func (c *DataCiteClient) Works(doi string) (Object, error) {
+	if IsArXiv(doi) {
+		doi = ArVixToDOI(doi)
+	}
 	src, err := c.WorksJSON(doi)
 	if err != nil {
 		return nil, err
