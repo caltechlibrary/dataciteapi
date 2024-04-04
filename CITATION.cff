@@ -15,7 +15,7 @@ maintainers:
     orcid: ""
 
 repository-code: "https://github.com/caltechlibrary/dataciteapi"
-version: 1.0.2
+version: 1.0.3
 license-url: "https://caltechlibrary/dataciteapi/LICENSE"
 keywords: [ "DataCite", "DOI", "GitHub", "metadata" ]
 date-released: 2021-07-15

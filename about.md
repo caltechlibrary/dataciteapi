@@ -11,7 +11,7 @@ authors:
     orcid: "https://orcid.org/0000-0003-0900-6903"
 
 repository-code: "https://github.com/caltechlibrary/dataciteapi"
-version: 1.0.2
+version: 1.0.3
 license-url: "https://caltechlibrary/dataciteapi/LICENSE"
 keywords: [ "DataCite", "DOI", "GitHub", "metadata" ]
 date-released: 2021-07-15
@@ -20,7 +20,7 @@ date-released: 2021-07-15
 About this software
 ===================
 
-## dataciteapi 1.0.2
+## dataciteapi 1.0.3
 
 ### Authors
 

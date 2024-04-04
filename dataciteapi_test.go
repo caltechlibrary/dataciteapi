@@ -86,9 +86,40 @@ func TestClient(t *testing.T) {
 	}
 }
 
+func TestArXivLookup(t *testing.T) {
+	api, err := NewDataCiteClient("datacite_test.go", MailTo)
+	if err != nil {
+		t.Error(err)
+		t.FailNow()
+	}
+	ids := []string{
+		"10.22002/D1.868",
+		"arXiv:2402.12335v1", 
+		"arXiv:2401.12460v1", 
+		"arXiv:2204.13532v2",
+		"arXiv:2312.07215",
+		"arXiv:2305.06519",
+		"arXiv:2312.03791",
+		"arXiv:2305.19279",
+		"arXiv:2305.05315",
+		"arXiv:2305.07673",
+		"arXiv:2111.03606",
+		"arXiv:2112.06016",
+	}
+	for _, id := range ids {
+		_, err = api.WorksJSON(id)
+		if err != nil {
+			t.Errorf("Run api.WorksJSON(%q), got unexpected error, %s", id, err)
+		}
+	}
+}
+
 func TestMain(m *testing.M) {
 	flag.StringVar(&MailTo, "mailto", "", "set the mailto for testing")
 	flag.Parse()
+	if MailTo == "" {
+		MailTo = "test@example.library.edu"
+	}
 	log.Printf("mailto: %q", MailTo)
 	os.Exit(m.Run())
 }
