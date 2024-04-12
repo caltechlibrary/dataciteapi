@@ -2,15 +2,15 @@
     "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
     "@type": "SoftwareSourceCode",
     "description": "A Golang package and command line tool for working with the public DataCite API",
-    "releaseNotes": "Updated Go version to 1.22 and doitools v0.0.2",
+    "releaseNotes": "Updated Go version to 1.22 and doitools v0.0.2, added Dois() and DoisJSON() func to client",
     "name": "dataciteapi",
     "codeRepository": "https://github.com/caltechlibrary/dataciteapi",
     "issueTracker": "https://github.com/caltechlibrary/dataciteapi/issues",
     "license": "https://caltechlibrary/dataciteapi/LICENSE",
 	"dateRelease": "2018-07-11",
 	"datePublished": "2021-07-15",
-	"dateModified": "2024-02-26",
-    "version": "1.0.3",
+	"dateModified": "2024-04-11",
+    "version": "1.1.0",
     "author": [
         {
             "@type": "Person",

@@ -161,3 +161,35 @@ func (c *DataCiteClient) Works(doi string) (Object, error) {
 	}
 	return nil, nil
 }
+
+// DoisJSON return the "dois" JSON source from `https://api.datacite.org/dois/` path
+func (c *DataCiteClient) DoisJSON(doi string) ([]byte, error) {
+	if IsArXiv(doi) {
+		doi = ArXivToDOI(doi)
+	}
+	s, err := doitools.NormalizeDOI(doi)
+	if err != nil {
+		return nil, err
+	}
+	return c.getJSON(path.Join("dois", s))
+}
+
+// Dois returns the "dois" object from `https://api.datacite.org/dois/` path
+func (c *DataCiteClient) Dois(doi string) (Object, error) {
+	if IsArXiv(doi) {
+		doi = ArXivToDOI(doi)
+	}
+	src, err := c.DoisJSON(doi)
+	if err != nil {
+		return nil, err
+	}
+	if len(src) > 0 {
+		object := make(Object)
+		err = jsonDecode(src, &object)
+		if err != nil {
+			return nil, err
+		}
+		return object, nil
+	}
+	return nil, nil
+}
