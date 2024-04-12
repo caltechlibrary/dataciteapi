@@ -42,11 +42,11 @@ pubDate: {release_date}
 
 # SYNOPSIS
 
-{appName} [OPTIONS] works DOI
+{appName} [OPTIONS] works|dois DOI
 
 # DESCRIPTION
 
-{app_name} retrieves "works" from the DataCite API.
+{app_name} retrieves "works" or "dois" from the DataCite API.
 
 {app_name} is a command line utility to retrieve "works" objects
 from the DataCite API. It follows the protocols described at
@@ -80,11 +80,25 @@ Return the works for the doi "10.1037/0003-066x.59.1.29"
         works "10.1037/0003-066x.59.1.29"
 ~~~
 
-Get the data cite record for "arXiv:2202.01037"
+Return the dois for the doi "10.1037/0003-066x.59.1.29"
+
+~~~
+    {appName} -mailto="jdoe@example.edu" \
+        dois "10.1037/0003-066x.59.1.29"
+~~~
+
+Get the works DataCite record for "arXiv:2202.01037"
 
 ~~~
     {appName} -mailto="jdoe@example.edi" \
 	    works "arXiv:2202.01037"
+~~~
+
+Get the dois DataCite record for "arXiv:2202.01037"
+
+~~~
+    {appName} -mailto="jdoe@example.edi" \
+	    dois "arXiv:2202.01037"
 ~~~
 
 `
@@ -174,7 +188,7 @@ func main() {
 	apiPath, args = pop(args)
 	doi, args = pop(args)
 	if apiPath == "" {
-		fmt.Fprintf(os.Stderr, "USAGE: %s works DOI\n", appName)
+		fmt.Fprintf(os.Stderr, "USAGE: %s works|dois DOI\n", appName)
 		os.Exit(1)
 	}
 	switch strings.ToLower(apiPath) {
@@ -189,8 +203,19 @@ func main() {
 			fmt.Fprintf(os.Stderr, "%s\n", err)
 			os.Exit(1)
 		}
+	case "dois":
+		obj, err := api.Dois(doi)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%s\n", err)
+			os.Exit(1)
+		}
+		src, err = json.MarshalIndent(obj, "", "   ")
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%s\n", err)
+			os.Exit(1)
+		}
 	default:
-		fmt.Fprintf(os.Stderr, "USAGE: %s works DOI\n", appName)
+		fmt.Fprintf(os.Stderr, "USAGE: %s works|dois DOI\n", appName)
 		os.Exit(1)
 	}
 	fmt.Fprintf(os.Stdout, "%s\n", src)

@@ -1,5 +1,5 @@
 ---
-title: "dataciteapi(1) user manual | version 1.1.0 0a8b8aa"
+title: "dataciteapi(1) user manual | version 1.1.0 82d479f"
 author: "R. S. Doiel"
 pubDate: 2024-04-11
 ---
@@ -10,11 +10,11 @@ dataciteapi
 
 # SYNOPSIS
 
-{appName} [OPTIONS] works DOI
+{appName} [OPTIONS] works|dois DOI
 
 # DESCRIPTION
 
-dataciteapi retrieves "works" from the DataCite API.
+dataciteapi retrieves "works" or "dois" from the DataCite API.
 
 dataciteapi is a command line utility to retrieve "works" objects
 from the DataCite API. It follows the protocols described at
@@ -48,10 +48,24 @@ Return the works for the doi "10.1037/0003-066x.59.1.29"
         works "10.1037/0003-066x.59.1.29"
 ~~~
 
-Get the data cite record for "arXiv:2202.01037"
+Return the dois for the doi "10.1037/0003-066x.59.1.29"
+
+~~~
+    {appName} -mailto="jdoe@example.edu" \
+        dois "10.1037/0003-066x.59.1.29"
+~~~
+
+Get the works DataCite record for "arXiv:2202.01037"
 
 ~~~
     {appName} -mailto="jdoe@example.edi" \
 	    works "arXiv:2202.01037"
+~~~
+
+Get the dois DataCite record for "arXiv:2202.01037"
+
+~~~
+    {appName} -mailto="jdoe@example.edi" \
+	    dois "arXiv:2202.01037"
 ~~~
 
