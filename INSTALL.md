@@ -6,6 +6,23 @@ Installation
 
 This is generalized instructions for a release.  For deployment suggestions see NOTES.md
 
+Quick install with curl or irm
+------------------------------
+
+If you are running macOS or Linux you can install released versions of crossrefapi
+with the following curl command.
+
+~~~
+curl https://caltechlibrary.github.io/crossrefapi/installer.sh
+~~~
+
+On Windows the install command in Powershell is
+
+~~~
+irm https://caltechlibrary.github.io/crossrefapi/installer.ps1 | iex
+~~~
+
+
 Compiled version
 ----------------
 
