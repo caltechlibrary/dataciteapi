@@ -1,28 +1,69 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
 <head>
-    <title>Caltech Library's Digital Library Development Sandbox</title>
-    <link rel="stylesheet" href="/css/site.css">
+    <title>dataciteapi</title>
+    <link rel="stylesheet" href="https://caltechlibrary.github.io/css/site.css">
+	<script type="module" src="https://caltechlibrary.github.io/CL-web-components/src/footer-global.js"></script>
 </head>
 <body>
-<header>
-<a href="https://library.caltech.edu"><img src="/assets/liblogo.gif" alt="Caltech Library logo"></a>
-</header>
 <nav>
-
+<ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="index.html">README</a></li>
+    <li><a href="LICENSE">LICENSE</a></li>
+    <li><a href="INSTALL.html">INSTALL</a></li>
+    <li><a href="user_manual.html">User Manual</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="search.html">Search</a></li>
+    <li><a href="https://github.com/caltechlibrary/dataciteapi">GitHub</a></li>
+</ul>
 </nav>
-
 <section>
-
+<h1 id="name">NAME</h1>
+<p>dataciteapi</p>
+<h1 id="synopsis">SYNOPSIS</h1>
+<p>{appName} <a href="#options">OPTIONS</a> works|dois DOI</p>
+<h1 id="description">DESCRIPTION</h1>
+<p>dataciteapi retrieves “works” or “dois” from the DataCite API.</p>
+<p>dataciteapi is a command line utility to retrieve “works” objects
+from the DataCite API. It follows the protocols described at</p>
+<p>https://support.datacite.org/docs/api</p>
+<p>NOTE: As of release v1.0.3 you can pass an arXiv id and it will be
+converted to the DOI version of arXiv registered with DataCite under the
+10.48550 prefix.</p>
+<h1 id="options">OPTIONS</h1>
+<dl>
+<dt>-help</dt>
+<dd>
+display help
+</dd>
+<dt>-license</dt>
+<dd>
+display license
+</dd>
+<dt>-mailto string</dt>
+<dd>
+set the mailto value for API access
+</dd>
+<dt>-version</dt>
+<dd>
+display app version
+</dd>
+</dl>
+<h1 id="examples">EXAMPLES</h1>
+<p>Return the works for the doi “10.1037/0003-066x.59.1.29”</p>
+<pre><code>    {appName} -mailto=&quot;jdoe@example.edu&quot; \
+        works &quot;10.1037/0003-066x.59.1.29&quot;</code></pre>
+<p>Return the dois for the doi “10.1037/0003-066x.59.1.29”</p>
+<pre><code>    {appName} -mailto=&quot;jdoe@example.edu&quot; \
+        dois &quot;10.1037/0003-066x.59.1.29&quot;</code></pre>
+<p>Get the works DataCite record for “arXiv:2202.01037”</p>
+<pre><code>    {appName} -mailto=&quot;jdoe@example.edi&quot; \
+        works &quot;arXiv:2202.01037&quot;</code></pre>
+<p>Get the dois DataCite record for “arXiv:2202.01037”</p>
+<pre><code>    {appName} -mailto=&quot;jdoe@example.edi&quot; \
+        dois &quot;arXiv:2202.01037&quot;</code></pre>
 </section>
-
-<footer>
-<span><h1><A href="https://caltech.edu">Caltech</a></h1></span>
-<span>&copy; 2021 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
-<address>1200 E California Blvd, Mail Code 1-32, Pasadena, CA 91125-3200</address> 
-<span>Phone: <a href="tel:+1-626-395-3405">(626)395-3405</a></span>
-<span><a href="mailto:library@caltech.edu">Email Us</a></span>
-<a class="cl-hide" href="sitemap.xml">Site Map</a>
-</footer>
+<footer-global></footer-global>
 </body>
 </html>
