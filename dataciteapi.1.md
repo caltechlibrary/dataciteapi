@@ -1,7 +1,7 @@
 ---
-title: "dataciteapi(1) user manual | version 1.1.0 9f68152"
+title: "dataciteapi(1) user manual | version 1.1.0 13c0937"
 author: "R. S. Doiel"
-pubDate: 2025-08-06
+pubDate: 2026-05-07
 ---
 
 # NAME
